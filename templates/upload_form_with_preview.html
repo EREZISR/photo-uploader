@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>העלאת תמונות לגן</title>
+</head>
+<body>
+    <h2>העלאת תמונות לגן</h2>
+    <form method="POST" enctype="multipart/form-data">
+        <label>שם הגן: <input type="text" name="garden_name" required></label><br><br>
+        <input type="file" name="files[]" accept="image/*" multiple required onchange="previewFiles(this.files)">
+        <div id="previews"></div>
+        <br><input type="submit" value="שלח">
+    </form>
+    <script>
+        function previewFiles(files) {
+            const previewContainer = document.getElementById("previews");
+            previewContainer.innerHTML = "";
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const reader = new FileReader();
+                const div = document.createElement("div");
+                const input = document.createElement("input");
+                input.type = "text";
+                input.name = "child_names[]";
+                input.placeholder = "שם הילד/ה";
+                input.required = true;
+                reader.onload = function(e) {
+                    const img = document.createElement("img");
+                    img.src = e.target.result;
+                    img.style.height = "120px";
+                    div.appendChild(img);
+                    div.appendChild(document.createElement("br"));
+                    div.appendChild(input);
+                    previewContainer.appendChild(div);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
+</body>
+</html>
